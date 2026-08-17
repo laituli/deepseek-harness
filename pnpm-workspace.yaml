@@ -23,6 +23,7 @@ packages:
   # personal/PERSONAL.md). Members for DEPENDENCY RESOLUTION only, like
   # examples/: not build targets of the repo-wide tsdown globs.
   - personal/plugins/dsh-my-plugin-ollama
+  - personal/plugins/dsh-my-plugin-ollama/client
 
 # Vendored framework packages keep their upstream semver ranges, while local
 # builds must resolve those matching names to this workspace's pinned sources.

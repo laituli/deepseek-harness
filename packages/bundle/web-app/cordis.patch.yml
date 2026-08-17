@@ -100,6 +100,10 @@
     # plugin is disabled.
     - id: llm-ollama
       name: 'dsh-my-plugin-ollama'
+    # The same plugin's browser half: the in-GUI Ollama setup form (Settings →
+    # Ollama (Local), the /ollama-setup command, and the chat overlay).
+    - id: client-llm-ollama
+      name: 'dsh-my-plugin-ollama-client'
 
     # The API gateway: the transport-agnostic dispatch face every client shape
     # shares. The base layer's agent-default-model service owns the default model.
