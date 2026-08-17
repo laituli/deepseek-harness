@@ -52,9 +52,15 @@ examples/    Runnable cordis.yml leaves over packages/examples bundles (see exam
 docs/        architecture, generated catalogs, postmortems, cookbook (see docs/AGENTS.md)
 scripts/     repo gates and generators
 website/     VitePress projection of selected bilingual docs/ sources
+personal/    personal cold-starter overlay of this fork: PERSONAL.md, plugin submodules, generated setup state (see personal/PERSONAL.md)
 ```
 
 Package groups: [packages/README.md](packages/README.md).
+
+This checkout is the author's personal fork. The dsh repo's allowed changelist
+is only the plugin list and plugin activation (see [personal/PERSONAL.md](personal/PERSONAL.md));
+everything else belongs in the `dsh-my-plugin-<name>` submodule repos under
+`personal/plugins/` or in `personal/` itself.
 
 ## Commands
 

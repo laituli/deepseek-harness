@@ -19,6 +19,10 @@ packages:
   # Deploy root of the single-exe build: a pure dependency manifest whose
   # closure is what the exe bundles and what the Python runtime distributes.
   - python/sdk-runtime
+  # The personal fork's cold-starter plugins (git submodules, see
+  # personal/PERSONAL.md). Members for DEPENDENCY RESOLUTION only, like
+  # examples/: not build targets of the repo-wide tsdown globs.
+  - personal/plugins/dsh-my-plugin-ollama
 
 # Vendored framework packages keep their upstream semver ranges, while local
 # builds must resolve those matching names to this workspace's pinned sources.

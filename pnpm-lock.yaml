@@ -1435,6 +1435,9 @@ importers:
       commander:
         specifier: ^15.0.0
         version: 15.0.0
+      dsh-my-plugin-ollama:
+        specifier: workspace:^
+        version: link:../../../personal/plugins/dsh-my-plugin-ollama
     devDependencies:
       '@deepseek-ai/cordis':
         specifier: workspace:^
@@ -8305,6 +8308,31 @@ importers:
         specifier: workspace:^
         version: link:../../storage/storage-domain
 
+  personal/plugins/dsh-my-plugin-ollama:
+    dependencies:
+      '@deepseek-ai/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
+    devDependencies:
+      '@deepseek-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@deepseek-ai/dsh-home-paths':
+        specifier: workspace:^
+        version: link:../../../packages/util/home-paths
+      '@deepseek-ai/dsh-llm':
+        specifier: workspace:^
+        version: link:../../../packages/llm/llm
+      '@deepseek-ai/dsh-settings':
+        specifier: workspace:^
+        version: link:../../../packages/settings/settings
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.20.0
+      typescript:
+        specifier: ^5.6.0
+        version: 5.9.3
+
   python/sdk-runtime:
     dependencies:
       '@deepseek-ai/cordis':
@@ -13848,6 +13876,11 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   typescript@6.0.3:
     resolution: {integrity: sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==}
     engines: {node: '>=14.17'}
@@ -19380,6 +19413,8 @@ snapshots:
     dependencies:
       vscode-jsonrpc: 5.0.1
       vscode-languageserver-protocol: 3.18.2
+
+  typescript@5.9.3: {}
 
   typescript@6.0.3: {}
 

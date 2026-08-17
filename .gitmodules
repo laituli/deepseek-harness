@@ -1,0 +1,3 @@
+[submodule "personal/plugins/dsh-my-plugin-ollama"]
+	path = personal/plugins/dsh-my-plugin-ollama
+	url = https://github.com/laituli/dsh-my-plugin-ollama.git

@@ -94,6 +94,13 @@
     - id: plugin-inventory
       name: '@deepseek-ai/dsh-host-plugin-inventory'
 
+    # ── personal fork overlay (see personal/PERSONAL.md) ──────────────────────
+    # The cold-starter Ollama provider: registers the local `ollama` route,
+    # its setup lifecycle, and the setup page. Only adds a row; no builtin
+    # plugin is disabled.
+    - id: llm-ollama
+      name: 'dsh-my-plugin-ollama'
+
     # The API gateway: the transport-agnostic dispatch face every client shape
     # shares. The base layer's agent-default-model service owns the default model.
     - id: api-gateway
