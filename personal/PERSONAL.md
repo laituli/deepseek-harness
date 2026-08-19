@@ -49,15 +49,17 @@ Attached to the web plugin list as the `llm-ollama` row (see
   chosen model advertised under it;
 - detects the OS, the GPU (nvidia-smi, then platform fallbacks), and whether
   the Ollama server answers;
-- the setup form lives **inside the dsh GUI** (the Ollama provider's custom
-  editor in Settings → Models, the `/ollama-setup` command, and a chat
-  overlay, driven by the `ollamaSetup/status` + `ollamaSetup/submit` +
+- the setup form lives **inside the dsh GUI** (the `/ollama-setup` command and
+  a chat overlay, driven by the `ollamaSetup/status` + `ollamaSetup/submit` +
   `ollamaSetup/redetect` remotes): it shows the detected OS/GPU/Ollama facts,
   pre-selects the OS-appropriate installation method and the GPU-suggested
   model (shipped tiers prefer the **Qwen 3.6** series), and submits the
   choices, including optional personalized installation and model storage
   (`OLLAMA_MODELS`) paths; the separate local setup webpage remains only as a
   headless fallback;
+- the durable configuration (endpoint, model, install timing, personalized
+  paths) is editable as a config card in **Settings → Plugins → Plugin
+  config**, staged over the `dsh-my-plugin-ollama` settings section;
 - the setup flow installs Ollama (or skips on manual/none), waits for the
   server, pulls the chosen model, runs a **fixed-seed local call test**
   (seed 42 by default) during submission, and saves the selection to
@@ -81,10 +83,12 @@ provider for servers with a proper GPU: while active it:
   the served OpenAI-compatible models;
 - detects the OS, the GPU, whether docker answers, and whether the vLLM API is
   reachable;
-- the setup form lives **inside the dsh GUI** (the vLLM provider's custom
-  editor in Settings → Models, the `/vllm-setup` command, and a chat overlay,
-  driven by the `vllmSetup/status` + `vllmSetup/submit` + `vllmSetup/redetect`
-  remotes);
+- the setup form lives **inside the dsh GUI** (the `/vllm-setup` command and a
+  chat overlay, driven by the `vllmSetup/status` + `vllmSetup/submit` +
+  `vllmSetup/redetect` remotes);
+- the durable configuration (model, HF source, port, cache path, lifecycle
+  timings) is editable as a config card in **Settings → Plugins → Plugin
+  config**, staged over the `dsh-my-plugin-vllm` settings section;
 - **Docker-first deployment**: it generates (and, when docker answers, runs)
   the `docker run` command for `vllm/vllm-openai`, mapping the API port and
   passing `--gpus all` when a NVIDIA GPU was detected; `manual` mode covers an
@@ -115,9 +119,12 @@ pnpm --filter dsh-my-plugin-vllm-client run build
 pnpm dsh web
 ```
 
-The first time you use the local model, its setup card in Settings → Models
-(and the chat overlay) walks you through the install; complete it once and the
-choice is saved to `personal/ollama/setup.json`, which the next clone reuses.
+The first time you use the local model, the chat overlay (opened by
+`/ollama-setup` / `/vllm-setup`, or automatically when you select the local
+provider in the model picker) walks you through the install; the durable
+configuration is editable in Settings → Plugins → Plugin config. Complete the
+setup once and the choice is saved to `personal/ollama/setup.json` (or
+`personal/vllm/setup.json`), which the next clone reuses.
 
 ## Attaching a new personal plugin
 
