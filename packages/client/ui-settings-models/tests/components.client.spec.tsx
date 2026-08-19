@@ -26,6 +26,11 @@ const openaiCopy = (template: string): string => providerCopy(template, OPENAI_T
 const DEEPSEEK_TARGET = { provider: 'deepseek-official', displayName: 'DeepSeek' }
 const deepSeekCopy = (template: string): string => providerCopy(template, DEEPSEEK_TARGET)
 
+/** Provider-editor render stub: no occupants are registered in these tests,
+ * so the slot renders its fallback — the generic editor — exactly as a page
+ * with no custom provider editors would. */
+const renderSlot: ModelsSectionProps['renderSlot'] = (_key, _owner, opts) => opts?.fallback ?? null
+
 /** Open one row's capacity disclosure (1-based, as the labels read). */
 function expandRow(position: number): void {
   fireEvent.click(screen.getByLabelText(`${en.modelAdvanced} ${String(position)}`))
@@ -193,7 +198,7 @@ async function mountFace(scripted: ReturnType<typeof scriptedFace>) {
     api: face as never,
     t,
   }
-  const view = render(<ModelsSection {...injected} />)
+  const view = render(<ModelsSection {...injected} renderSlot={renderSlot} />)
   return { view, face, update, replace, mutate, set, unset, controller }
 }
 
@@ -272,6 +277,7 @@ describe('ModelsSection', () => {
       useSnapshot={bindSnapshotSelector(controller.store)}
       api={face as never}
       t={t}
+      renderSlot={renderSlot}
     />)
 
     const missing = screen.getByRole('img', { name: en.credentialMissing })
@@ -295,10 +301,36 @@ describe('ModelsSection', () => {
       useSnapshot={bindSnapshotSelector(controller.store)}
       api={face as never}
       t={t}
+      renderSlot={renderSlot}
     />)
     // Now a row with an Edit button, not an open card.
     expect(screen.getAllByText(en.edit).length).toBeGreaterThan(1)
     expect(screen.queryByLabelText(en.keyInput)).toBeNull()
+  })
+
+  it('lets a provider plugin replace the editor through the provider-editor slot', async () => {
+    // A provider plugin registers an occupant keyed by its route id; the page
+    // must dispatch every card's editor through that key with the provider
+    // identity as owner, so the custom editor replaces the generic one.
+    const { face } = scriptedFace()
+    const controller = new ModelsSettingsStore(face as unknown as WireFace)
+    await controller.load()
+    let dispatched: { owner: unknown; entryKey: unknown } | undefined
+    const occupantRenderSlot: ModelsSectionProps['renderSlot'] = (_key, owner, opts) => {
+      dispatched = { owner, entryKey: opts?.entryKey }
+      return <div data-testid="occupant-editor">{(owner as unknown as { provider: string }).provider}</div>
+    }
+    render(<ModelsSection
+      controller={controller}
+      useSnapshot={bindSnapshotSelector(controller.store)}
+      api={face as never}
+      t={t}
+      renderSlot={occupantRenderSlot}
+    />)
+    fireEvent.click(screen.getByRole('button', { name: openaiCopy(en.editProvider) }))
+    expect(screen.getByTestId('occupant-editor').textContent).toBe('openai')
+    expect(dispatched?.entryKey).toBe('openai')
+    expect(dispatched?.owner).toEqual({ provider: 'openai', displayName: 'openai' })
   })
 
   it('decides setup need from the joined credential state and the first-run posture', () => {
@@ -1014,6 +1046,7 @@ describe('ModelsSection', () => {
         useSnapshot={bindSnapshotSelector(controller.store)}
         api={face as never}
         t={t}
+        renderSlot={renderSlot}
       />)
       const key = await screen.findByLabelText<HTMLInputElement>(en.keyInput)
       expect(key.placeholder).toBe(en.keyPlaceholder)
@@ -1151,6 +1184,7 @@ describe('ModelsSection', () => {
       useSnapshot={bindSnapshotSelector(controller.store)}
       api={face.face as never}
       t={t}
+      renderSlot={renderSlot}
     />)
     expect(screen.getByText(/directory down/)).toBeTruthy()
     fireEvent.click(screen.getByText(en.retry))
@@ -1172,6 +1206,7 @@ describe('ModelsSection', () => {
       useSnapshot={bindSnapshotSelector(controller.store)}
       api={face as never}
       t={t}
+      renderSlot={renderSlot}
     />)
     expect(screen.getByText(en.readOnly)).toBeTruthy()
     expect(screen.getAllByText<HTMLButtonElement>(en.remove).every(button => button.disabled)).toBe(true)
@@ -1232,6 +1267,7 @@ describe('ModelsSection', () => {
       useSnapshot={bindSnapshotSelector(controller.store)}
       api={face as never}
       t={t}
+      renderSlot={renderSlot}
     />)
     await screen.findByText('DeepSeek')
   })

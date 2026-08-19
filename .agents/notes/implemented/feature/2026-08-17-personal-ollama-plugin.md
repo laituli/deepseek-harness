@@ -28,18 +28,37 @@ change is exactly the allowed changelist:
   `packages/bundle/web-app/package.json` `dependencies` (which puts the
   package into the profile module fallback closure, so the Loader resolves
   the row from any profile);
+- one authorized `ui-settings-models` change: the Models page renders every
+  provider card's editor through a keyed `settings.models.provider-editor`
+  slot (key = provider route id, the generic `ProviderEditor` as fallback),
+  so the Ollama setup form can live INSIDE Settings → Models as the
+  provider's custom editor instead of a standalone Settings → Ollama (Local)
+  section — the sibling-section placement was the one dissonant piece against
+  the page's otherwise generic rows; absent an occupant the generic editor
+  renders unchanged, so DeepSeek and pi-ai cards behave exactly as before;
 - the personal docs (`personal/PERSONAL.md`, referenced from README and
   AGENTS.md) and this note.
 
 The plugin itself owns the behavior: it registers the `ollama` provider route
 on `ctx.llm` through the public adapter/directory/discovery seams, detects
-OS/GPU/Ollama, opens a local temporal setup page when setup is required
-(installation choice defaulted per OS and saved to
-`$DSH_HOME/personal/ollama/setup.json` in the repo), picks the model by GPU
-VRAM, pulls it, runs a fixed-seed local call test at start, and re-opens the
-setup page when a consumer selects the provider before setup. The plugin repo
-ships its own real-composition test (a throwaway profile boots the base
-bundle plus the plugin and a probe row against a stub Ollama server).
+OS/GPU/Ollama without blocking the event loop, and exposes the setup flow to
+the web GUI as `ollamaSetup/status` and `ollamaSetup/submit` typert remotes
+(the gateway's SRC discovery over a `TypertRemoteService`). The setup form
+lives in the GUI — the Ollama provider's custom editor inside Settings →
+Models, a `/ollama-setup` command, and a chat overlay from a small dedicated
+client package — and the browser only ever
+sees the setup surface when it actually sends a request to the provider before
+setup: the request is refused with `SETUP_REQUIRED`; catalog listing, model
+resolution, and boot never pop anything. The installation choice is defaulted
+per OS with optional personalized installation and model-storage paths, saved
+to `$DSH_HOME/personal/ollama/setup.json` in the repo. The model is picked by
+GPU VRAM from the shipped Qwen 3.6 tiers and pulled during setup; the
+fixed-seed local call test runs during setup submission (a boot-time test is
+opt-in via `startupTest`, because loading the model into VRAM is a lag spike a
+cold start should not pay). A separate local setup webpage remains only as a
+headless fallback. The plugin repo ships its own real-composition test (a
+throwaway profile boots the base bundle plus the plugin and a probe row
+against a stub Ollama server).
 
 ## Alternatives considered
 
@@ -63,8 +82,9 @@ home in a generic profile.
 ## Consequences
 
 The web provider list shows an `Ollama (Local)` route whenever the row is
-active, and the first boot of a fresh clone walks a person through the local
-setup in the browser. The fork gains one submodule whose private repo is a
+active, and a fresh clone's first selection of that route walks a person
+through the local setup in the browser — the boot itself stays quiet. The
+fork gains one submodule whose private repo is a
 hard dependency of the composed web profile: a clone without
 `git submodule update --init` cannot resolve the row, which fails loud at
 boot rather than silently. The plugin's build output (`lib/`) is a local

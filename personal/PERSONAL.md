@@ -46,17 +46,24 @@ Attached to the web plugin list as the `llm-ollama` row (see
   chosen model advertised under it;
 - detects the OS, the GPU (nvidia-smi, then platform fallbacks), and whether
   the Ollama server answers;
-- on first run opens a **local temporal setup page** that shows the detected
-  facts, pre-selects the OS-appropriate installation method and the
-  GPU-suggested model, and submits the choices;
+- the setup form lives **inside the dsh GUI** (the Ollama provider's custom
+  editor in Settings → Models, the `/ollama-setup` command, and a chat
+  overlay, driven by the `ollamaSetup/status` + `ollamaSetup/submit` +
+  `ollamaSetup/redetect` remotes): it shows the detected OS/GPU/Ollama facts,
+  pre-selects the OS-appropriate installation method and the GPU-suggested
+  model (shipped tiers prefer the **Qwen 3.6** series), and submits the
+  choices, including optional personalized installation and model storage
+  (`OLLAMA_MODELS`) paths; the separate local setup webpage remains only as a
+  headless fallback;
 - the setup flow installs Ollama (or skips on manual/none), waits for the
   server, pulls the chosen model, runs a **fixed-seed local call test**
-  (seed 42 by default), and saves the selection to
+  (seed 42 by default) during submission, and saves the selection to
   `personal/ollama/setup.json` in this repo;
-- on every start after setup, re-verifies the model and re-runs the
-  fixed-seed test, logging the result;
-- selecting the provider re-runs detection and, when setup is still required,
-  pops the setup page again.
+- on every start after setup, re-verifies the model and (when `startupTest` is
+  enabled) re-runs the fixed-seed test, logging the result;
+- using the local model while setup is still required is refused with
+  `SETUP_REQUIRED` (listing the catalog or booting never pops anything), so a
+  cold start stays quiet until you ask the local model to work.
 
 The plugin's own README (`personal/plugins/dsh-my-plugin-ollama/README.md`)
 owns its configuration fields and test command.
@@ -72,8 +79,9 @@ pnpm --filter dsh-my-plugin-ollama run build
 pnpm dsh web
 ```
 
-The first boot opens the Ollama setup page; complete it once and the choice is
-saved to `personal/ollama/setup.json`, which the next clone reuses.
+The first time you use the local model, its setup card in Settings → Models
+(and the chat overlay) walks you through the install; complete it once and the
+choice is saved to `personal/ollama/setup.json`, which the next clone reuses.
 
 ## Attaching a new personal plugin
 

@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-17-personal-ollama-plugin.md
-2026-08-17-personal-ollama-plugin.md: b52e5f6c1c9886b6c4bd46d1094f1c348f0cb5e6
-2026-08-17-personal-ollama-plugin.zh.md: 62dd61672644a1051627e247136f9c339399108e
+2026-08-17-personal-ollama-plugin.md: 334dbc018c07462f0d8d735c6d5d5e4c61d59d15
+2026-08-17-personal-ollama-plugin.zh.md: 00ea4d117c1db2af8824a0b7aa77b680d6b32821
