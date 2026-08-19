@@ -38,3 +38,24 @@ apps/web/dist/
 worktrees/
 .agents/worktrees/
 .typert-*/
+
+# Personal fork: DSH_HOME = repo root, so the runtime writes into the tree.
+# Machine-local state must never be committed (.credentials.yaml holds the API key).
+.credentials.yaml
+.anonymous-user-id
+.npmrc
+.build-log.txt
+.dsh-home/
+.dsh-web-log.txt
+.install-log.txt
+.install-log2.txt
+.pnpm-cache/
+.pnpm-state/
+.xdg-cache/
+.xdg-state/
+node-v22.23.2-win-x64.zip
+node22/
+profiles/
+sessions/
+storages/
+test-codex.tgz
