@@ -1441,6 +1441,12 @@ importers:
       dsh-my-plugin-ollama-client:
         specifier: workspace:^
         version: link:../../../personal/plugins/dsh-my-plugin-ollama/client
+      dsh-my-plugin-vllm:
+        specifier: workspace:^
+        version: link:../../../personal/plugins/dsh-my-plugin-vllm
+      dsh-my-plugin-vllm-client:
+        specifier: workspace:^
+        version: link:../../../personal/plugins/dsh-my-plugin-vllm/client
     devDependencies:
       '@deepseek-ai/cordis':
         specifier: workspace:^
@@ -8378,6 +8384,85 @@ importers:
         specifier: ^19.0.0
         version: 19.2.4(@types/react@19.2.18)
       dsh-my-plugin-ollama:
+        specifier: workspace:^
+        version: link:..
+      esbuild:
+        specifier: ^0.21.0
+        version: 0.21.5
+      react:
+        specifier: ^19.0.0
+        version: 19.2.8
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.8(react@19.2.8)
+      typescript:
+        specifier: ^5.6.0
+        version: 5.9.3
+
+  personal/plugins/dsh-my-plugin-vllm:
+    dependencies:
+      '@deepseek-ai/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
+    devDependencies:
+      '@deepseek-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@deepseek-ai/dsh-home-paths':
+        specifier: workspace:^
+        version: link:../../../packages/util/home-paths
+      '@deepseek-ai/dsh-llm':
+        specifier: workspace:^
+        version: link:../../../packages/llm/llm
+      '@deepseek-ai/dsh-settings':
+        specifier: workspace:^
+        version: link:../../../packages/settings/settings
+      '@deepseek-ai/dsh-typert-protocol':
+        specifier: workspace:^
+        version: link:../../../packages/typert/protocol
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.20.0
+      typescript:
+        specifier: ^5.6.0
+        version: 5.9.3
+
+  personal/plugins/dsh-my-plugin-vllm/client:
+    devDependencies:
+      '@deepseek-ai/dsh-api-remotes':
+        specifier: workspace:^
+        version: link:../../../../packages/api/remotes
+      '@deepseek-ai/dsh-client-locale':
+        specifier: workspace:^
+        version: link:../../../../packages/client/locale
+      '@deepseek-ai/dsh-client-runtime':
+        specifier: workspace:^
+        version: link:../../../../packages/client/runtime
+      '@deepseek-ai/dsh-client-ui-commands':
+        specifier: workspace:^
+        version: link:../../../../packages/client/ui-commands
+      '@deepseek-ai/dsh-client-ui-conversation':
+        specifier: workspace:^
+        version: link:../../../../packages/client/ui-conversation
+      '@deepseek-ai/dsh-client-ui-primitives':
+        specifier: workspace:^
+        version: link:../../../../packages/client/ui-primitives
+      '@deepseek-ai/dsh-client-ui-settings-models':
+        specifier: workspace:^
+        version: link:../../../../packages/client/ui-settings-models
+      '@deepseek-ai/dsh-client-ui-slots':
+        specifier: workspace:^
+        version: link:../../../../packages/client/ui-slots
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.20.0
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: ^19.0.0
+        version: 19.2.4(@types/react@19.2.18)
+      dsh-my-plugin-vllm:
         specifier: workspace:^
         version: link:..
       esbuild:
