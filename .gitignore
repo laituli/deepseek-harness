@@ -55,7 +55,16 @@ worktrees/
 .xdg-state/
 node-v22.23.2-win-x64.zip
 node22/
-profiles/
+# Profiles are runtime state, but the web profile's manifest files record the
+# installed plugin set (package.json + lockfile pin the git commits), so they
+# ARE committed: a fresh clone replays them with `dsh plugin --profile web install`.
+profiles/*
+!profiles/web/
+profiles/web/*
+!profiles/web/package.json
+!profiles/web/pnpm-lock.yaml
+!profiles/web/pnpm-workspace.yaml
+!profiles/web/cordis.patch.yml
 sessions/
 storages/
 test-codex.tgz
