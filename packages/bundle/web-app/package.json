@@ -102,11 +102,7 @@
     "@deepseek-ai/dsh-storage-json": "workspace:^",
     "@deepseek-ai/dsh-workspace": "workspace:^",
     "@deepseek-ai/schemastery": "workspace:^",
-    "commander": "^15.0.0",
-    "dsh-my-plugin-ollama": "workspace:^",
-    "dsh-my-plugin-ollama-client": "workspace:^",
-    "dsh-my-plugin-vllm": "workspace:^",
-    "dsh-my-plugin-vllm-client": "workspace:^"
+    "commander": "^15.0.0"
   },
   "peerDependencies": {
     "@deepseek-ai/cordis-plugin-loader": "workspace:^",

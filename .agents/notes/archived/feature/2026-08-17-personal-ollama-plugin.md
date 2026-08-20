@@ -1,6 +1,7 @@
 # Agent Note: Personal Ollama plugin on the fork
 
 Status: implemented
+Archived: 2026-08-20
 
 English | [中文](2026-08-17-personal-ollama-plugin.zh.md)
 
