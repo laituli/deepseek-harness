@@ -14,7 +14,7 @@ vLLM 插件从分支携带的接线转换为 profile 安装的 bundle，分支�
 
 - web bundle 补丁（`packages/bundle/web-app/cordis.patch.yml`）删除个人行（`llm-vllm`、`client-llm-vllm`）；这些行改由插件自身的补丁携带——插件声明 `"dsh": { "bundle": { "patch": "./cordis.patch.yml" } }`，这正是 `dsh plugin add` 将其激活为 profile 层的依据；
 - 激活接线被移除：`dsh-my-plugin-vllm` / `dsh-my-plugin-vllm-client` 退出 `packages/bundle/web-app/package.json` 的 `dependencies` 与 `pnpm-workspace.yaml`，子模块注册被删除（`.gitmodules`、gitlink 与反初始化的工作树）；
-- 安装按 profile 进行：`dsh plugin --profile web add github:laituli/dsh-my-plugin-vllm github:laituli/dsh-my-plugin-vllm#path:client`——根包作为 bundle 层激活，浏览器半（`dsh-my-plugin-vllm-client`，同一仓库的子目录）通过 pnpm 的 `#path:client` git 子目录 spec 一并安装（子目录片段记录在 profile 的锁文件中）；
+- 安装按 profile 进行，单一 spec：`dsh plugin --profile web add github:laituli/dsh-my-plugin-vllm`——仓库包含三个包：虚拟的 `dsh-my-plugin-vllm` bundle（profile 层；只声明 `dsh.bundle.patch` 并依赖另外两个）、宿主半 `dsh-my-plugin-vllm-core`（`core/`）与浏览器半 `dsh-my-plugin-vllm-client`（`client/`，同一仓库的子目录）。bundle 通过 pnpm 的 `#path:core` / `#path:client` git 子目录 spec 拉入两个半（子目录片段记录在 profile 的锁文件中）；
 - 插件包**提交构建好的 `lib/`**——安装时不运行 `prepare` 构建。`prepare` 构建对这些插件不可行：pnpm 会先在取回的包内运行 `npm install`，而它们的构建工具链（`@deepseek-ai/*` 工作区包）并不在 npm 上。清单也避免在 `dependencies`/`peerDependencies` 中使用 `workspace:` 协议（在非工作区环境中无效），改用普通版本范围声明由 harness 提供的 peers；
 - 个人文档（`personal/PERSONAL.md`、`personal/start-web.ps1`）描述仅 vLLM、profile 安装的冷启动流程。
 

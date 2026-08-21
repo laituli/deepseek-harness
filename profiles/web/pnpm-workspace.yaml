@@ -3,3 +3,6 @@ packages:
 
 nodeLinker: hoisted
 autoInstallPeers: false
+# The vllm bundle's own dependencies are git subfolder deps of the same repo
+# (#path:core / #path:client); pnpm blocks nested exotic deps by default.
+blockExoticSubdeps: false

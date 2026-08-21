@@ -35,12 +35,15 @@ bundle, and the fork stops carrying personal plugin wiring altogether:
   `dsh-my-plugin-vllm-client` leave `packages/bundle/web-app/package.json`
   `dependencies` and `pnpm-workspace.yaml`, and the submodule registration is
   deleted (`.gitmodules`, the gitlinks, and the deinitialized working trees);
-- installation is per profile:
-  `dsh plugin --profile web add github:laituli/dsh-my-plugin-vllm github:laituli/dsh-my-plugin-vllm#path:client`
-  — the root package activates as the bundle layer, and the browser half
-  (`dsh-my-plugin-vllm-client`, a subdirectory of the same repository)
-  installs alongside via pnpm's `#path:client` git subfolder spec (the
-  subfolder fragment lives in the profile's lockfile);
+- installation is per profile, one spec:
+  `dsh plugin --profile web add github:laituli/dsh-my-plugin-vllm` — the
+  repository ships three packages: the virtual `dsh-my-plugin-vllm` bundle
+  (the profile layer; it only declares `dsh.bundle.patch` and depends on the
+  other two), the host half `dsh-my-plugin-vllm-core` (`core/`), and the
+  browser half `dsh-my-plugin-vllm-client` (`client/`, a subdirectory of the
+  same repository). The bundle pulls the halves in through pnpm's
+  `#path:core` / `#path:client` git subfolder specs (the subfolder fragments
+  live in the profile's lockfile);
 - the plugin packages ship **committed built `lib/`** — no `prepare` build
   runs on install. A `prepare` build cannot work for these plugins: pnpm runs
   `npm install` inside the fetched package first, and their build toolchain

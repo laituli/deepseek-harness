@@ -1,10 +1,6 @@
 {
   "name": "dsh-profile-web",
   "private": true,
-  "dependencies": {
-    "dsh-my-plugin-vllm": "git+https://github.com/laituli/dsh-my-plugin-vllm.git",
-    "dsh-my-plugin-vllm-client": "git+https://github.com/laituli/dsh-my-plugin-vllm.git"
-  },
   "dsh": {
     "profile": {
       "bundles": [
@@ -13,5 +9,8 @@
         "dsh-my-plugin-vllm"
       ]
     }
+  },
+  "dependencies": {
+    "dsh-my-plugin-vllm": "git+https://github.com/laituli/dsh-my-plugin-vllm.git"
   }
 }

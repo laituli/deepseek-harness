@@ -41,17 +41,18 @@ The local-model provider for servers with a proper GPU, installed into the web
 profile as a bundle:
 
 ```sh
-dsh plugin --profile web add github:laituli/dsh-my-plugin-vllm \
-  github:laituli/dsh-my-plugin-vllm#path:client
+dsh plugin --profile web add github:laituli/dsh-my-plugin-vllm
 ```
 
-The plugin package declares `dsh.bundle.patch` (its own `cordis.patch.yml`
-mounts the `llm-vllm` and `client-llm-vllm` rows) and the browser half is the
-sibling `dsh-my-plugin-vllm-client` package from the same repository, installed
-alongside via pnpm's `#path:client` git subfolder spec (the subfolder fragment
-lives in the profile lockfile). The plugin ships built `lib/` in its repo —
-pnpm installs it as-is, no `prepare` build runs on install. While active the
-plugin:
+The repository ships three packages: the virtual `dsh-my-plugin-vllm` bundle
+(this package — it only declares `dsh.bundle.patch`, mounts the rows, and
+depends on the other two), the host half `dsh-my-plugin-vllm-core`, and the
+browser half `dsh-my-plugin-vllm-client` (a subdirectory of the same repo,
+pulled in via pnpm's `#path:core` / `#path:client` git subfolder specs, pinned
+in the profile lockfile). The bundle's `cordis.patch.yml` mounts the
+`llm-vllm` (→ core) and `client-llm-vllm` (→ client) rows. All three ship
+built `lib/` in their repo — pnpm installs them as-is, no `prepare` build runs
+on install. While active the plugin:
 
 - registers the `vllm` provider in the dsh model provider list, advertising
   the served OpenAI-compatible models;
@@ -120,13 +121,14 @@ in any tracked file — a clone without the profile state would forget it. To
 persist "these plugins are installed" in the repo:
 
 1. Run the adds once on any machine:
-   `dsh plugin --profile web add github:laituli/dsh-my-plugin-vllm github:laituli/dsh-my-plugin-vllm#path:client`
-   (the plugin ships built `lib/`, so no build scripts run on install).
+   `dsh plugin --profile web add github:laituli/dsh-my-plugin-vllm`
+   (the virtual bundle pulls the core and client halves in transitively; all
+   ship built `lib/`, so no build scripts run on install).
 2. Commit the profile's manifest files:
-   `profiles/web/package.json` (the git dependencies and the reconciled
+   `profiles/web/package.json` (the git dependency and the reconciled
    `dsh.profile.bundles` list), `profiles/web/pnpm-lock.yaml` (the pinned git
-   commits, including the client's `path: client` subfolder), and
-   `profiles/web/cordis.patch.yml`. `.gitignore` un-ignores exactly these;
+   commits, including the `path: core` / `path: client` subfolder fragments),
+   and `profiles/web/cordis.patch.yml`. `.gitignore` un-ignores exactly these;
    everything else under `profiles/` (`node_modules`, the healed module
    fallback, the boot-rewritten `cordis.yml`) stays machine-local.
 3. Every fresh clone replays the exact set with `dsh plugin --profile web
@@ -153,11 +155,15 @@ refresh the browser tab once the new URL line appears. `-SkipShell` skips the
 ## Attaching a new personal plugin
 
 1. Create the private repo `dsh-my-plugin-<name>` and push its code. The
-   package declares
+   top-level package declares
    `"dsh": { "bundle": { "patch": "./cordis.patch.yml" } }` and ships a
    `cordis.patch.yml` whose rows mount the plugin — that declaration is what
-   makes `dsh plugin add` activate it as a profile layer.
-2. Make the package installable from git: **commit built `lib/`** in the repo
+   makes `dsh plugin add` activate it as a profile layer. Split a dual-face
+   plugin into `core/` + `client/` subdirectories and make the top-level
+   package a virtual bundle that depends on them via
+   `github:laituli/dsh-my-plugin-<name>#path:core` / `#path:client`, so one
+   spec installs everything.
+2. Make the packages installable from git: **commit built `lib/`** in the repo
    (and list it in `files`). A `prepare` build does NOT work for these
    plugins — pnpm runs `npm install` inside the fetched package first, and
    their build toolchain (`@deepseek-ai/*` workspace packages) is not on npm.
