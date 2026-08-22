@@ -38,3 +38,33 @@ apps/web/dist/
 worktrees/
 .agents/worktrees/
 .typert-*/
+
+# Personal fork: DSH_HOME = repo root, so the runtime writes into the tree.
+# Machine-local state must never be committed (.credentials.yaml holds the API key).
+.credentials.yaml
+.anonymous-user-id
+.npmrc
+.build-log.txt
+.dsh-home/
+.dsh-web-log.txt
+.install-log.txt
+.install-log2.txt
+.pnpm-cache/
+.pnpm-state/
+.xdg-cache/
+.xdg-state/
+node-v22.23.2-win-x64.zip
+node22/
+# Profiles are runtime state, but the web profile's manifest files record the
+# installed plugin set (package.json + lockfile pin the git commits), so they
+# ARE committed: a fresh clone replays them with `dsh plugin --profile web install`.
+profiles/*
+!profiles/web/
+profiles/web/*
+!profiles/web/package.json
+!profiles/web/pnpm-lock.yaml
+!profiles/web/pnpm-workspace.yaml
+!profiles/web/cordis.patch.yml
+sessions/
+storages/
+test-codex.tgz

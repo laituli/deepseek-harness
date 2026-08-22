@@ -123,7 +123,27 @@ interface StoredRemoteMethodMarker {
   readonly invocation: RemoteInvocationMarker
 }
 
-const markers = new WeakMap<object, Map<string, StoredRemoteMethodMarker>>()
+/**
+ * Global key under which the marker table is shared across module copies.
+ * SRC discovery must see a plugin's `@Remote` decorators even when the plugin
+ * resolves a different physical copy of this package than the Gateway does
+ * (an installed bundle resolves `lib/`, a source-launched Gateway resolves
+ * `src/`): a module-private table would make the Gateway's discovery read an
+ * empty table and silently not claim the plugin's endpoints.
+ */
+const MARKERS_TABLE_KEY = Symbol.for('@deepseek-ai/dsh-typert-protocol/markers')
+
+/** The marker table shared by every copy of this package in the process. */
+const markers: WeakMap<object, Map<string, StoredRemoteMethodMarker>> = (() => {
+  const global = globalThis as unknown as Record<symbol, unknown>
+  const existing = global[MARKERS_TABLE_KEY]
+  if (existing instanceof WeakMap) {
+    return existing as WeakMap<object, Map<string, StoredRemoteMethodMarker>>
+  }
+  const created = new WeakMap<object, Map<string, StoredRemoteMethodMarker>>()
+  global[MARKERS_TABLE_KEY] = created
+  return created
+})()
 
 /**
  * Bind one visible Service field to a Cordis key and Remote namespace.

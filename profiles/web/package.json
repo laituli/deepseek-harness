@@ -1,0 +1,16 @@
+{
+  "name": "dsh-profile-web",
+  "private": true,
+  "dsh": {
+    "profile": {
+      "bundles": [
+        "@deepseek-ai/dsh-base",
+        "@deepseek-ai/dsh-web-app",
+        "dsh-my-plugin-vllm"
+      ]
+    }
+  },
+  "dependencies": {
+    "dsh-my-plugin-vllm": "git+https://github.com/laituli/dsh-my-plugin-vllm.git"
+  }
+}
