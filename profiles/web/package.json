@@ -6,11 +6,13 @@
       "bundles": [
         "@deepseek-ai/dsh-base",
         "@deepseek-ai/dsh-web-app",
-        "dsh-my-plugin-vllm"
+        "dsh-my-plugin-vllm",
+        "dsh-my-plugin-add-plugin"
       ]
     }
   },
   "dependencies": {
+    "dsh-my-plugin-add-plugin": "git+https://github.com/laituli/dsh-my-plugin-add-plugin.git",
     "dsh-my-plugin-vllm": "git+https://github.com/laituli/dsh-my-plugin-vllm.git"
   }
 }

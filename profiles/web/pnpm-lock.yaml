@@ -8,11 +8,31 @@ importers:
 
   .:
     dependencies:
+      dsh-my-plugin-add-plugin:
+        specifier: git+https://github.com/laituli/dsh-my-plugin-add-plugin.git
+        version: git+https://github.com/laituli/dsh-my-plugin-add-plugin.git#91512467694daa9564a781203241fc85069bf028
       dsh-my-plugin-vllm:
         specifier: git+https://github.com/laituli/dsh-my-plugin-vllm.git
         version: git+https://github.com/laituli/dsh-my-plugin-vllm.git#bacc95f07f717c0886d93df7d6693ed222bf537e
 
 packages:
+
+  dsh-my-plugin-add-plugin-client@git+https://github.com/laituli/dsh-my-plugin-add-plugin.git#91512467694daa9564a781203241fc85069bf028&path:client:
+    resolution: {commit: 91512467694daa9564a781203241fc85069bf028, path: client, repo: https://github.com/laituli/dsh-my-plugin-add-plugin.git, type: git}
+    version: 0.1.0
+
+  dsh-my-plugin-add-plugin-core@git+https://github.com/laituli/dsh-my-plugin-add-plugin.git#91512467694daa9564a781203241fc85069bf028&path:core:
+    resolution: {commit: 91512467694daa9564a781203241fc85069bf028, path: core, repo: https://github.com/laituli/dsh-my-plugin-add-plugin.git, type: git}
+    version: 0.1.0
+    peerDependencies:
+      '@deepseek-ai/cordis': ^4.0.1
+      '@deepseek-ai/dsh-commands': ^0.1.0-rc.5
+      '@deepseek-ai/dsh-home-paths': ^0.1.0-rc.5
+      '@deepseek-ai/dsh-llm': ^0.1.0-rc.5
+
+  dsh-my-plugin-add-plugin@git+https://github.com/laituli/dsh-my-plugin-add-plugin.git#91512467694daa9564a781203241fc85069bf028:
+    resolution: {commit: 91512467694daa9564a781203241fc85069bf028, repo: https://github.com/laituli/dsh-my-plugin-add-plugin.git, type: git}
+    version: 0.1.0
 
   dsh-my-plugin-vllm-client@git+https://github.com/laituli/dsh-my-plugin-vllm.git#bacc95f07f717c0886d93df7d6693ed222bf537e&path:client:
     resolution: {commit: bacc95f07f717c0886d93df7d6693ed222bf537e, path: client, repo: https://github.com/laituli/dsh-my-plugin-vllm.git, type: git}
@@ -34,6 +54,20 @@ packages:
     version: 0.1.0
 
 snapshots:
+
+  dsh-my-plugin-add-plugin-client@git+https://github.com/laituli/dsh-my-plugin-add-plugin.git#91512467694daa9564a781203241fc85069bf028&path:client: {}
+
+  dsh-my-plugin-add-plugin-core@git+https://github.com/laituli/dsh-my-plugin-add-plugin.git#91512467694daa9564a781203241fc85069bf028&path:core: {}
+
+  dsh-my-plugin-add-plugin@git+https://github.com/laituli/dsh-my-plugin-add-plugin.git#91512467694daa9564a781203241fc85069bf028:
+    dependencies:
+      dsh-my-plugin-add-plugin-client: git+https://github.com/laituli/dsh-my-plugin-add-plugin.git#91512467694daa9564a781203241fc85069bf028&path:client
+      dsh-my-plugin-add-plugin-core: git+https://github.com/laituli/dsh-my-plugin-add-plugin.git#91512467694daa9564a781203241fc85069bf028&path:core
+    transitivePeerDependencies:
+      - '@deepseek-ai/cordis'
+      - '@deepseek-ai/dsh-commands'
+      - '@deepseek-ai/dsh-home-paths'
+      - '@deepseek-ai/dsh-llm'
 
   dsh-my-plugin-vllm-client@git+https://github.com/laituli/dsh-my-plugin-vllm.git#bacc95f07f717c0886d93df7d6693ed222bf537e&path:client: {}
 
