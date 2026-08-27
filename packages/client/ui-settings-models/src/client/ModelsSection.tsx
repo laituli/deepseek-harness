@@ -9,7 +9,10 @@
  * dormant-provider select. Each card kind owns its own open state, so closing
  * one never discards a draft in another. Every mutation writes through the
  * wire, while a provider removal first requires confirmation; the page
- * re-renders from pushed invalidations or the post-apply reload.
+ * re-renders from pushed invalidations or the post-apply reload. A keyed
+ * provider-editor slot wraps every card's editor (key = provider route id,
+ * generic editor as fallback) so a provider plugin can replace the generic
+ * form with a custom one for its own route.
  */
 
 import { useState } from 'react'
@@ -17,6 +20,7 @@ import type { ReactNode } from 'react'
 import type { IApiClient } from '@deepseek-ai/dsh-api-remotes/client'
 import { Button, IconPlusOutline16, Modal } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { SnapshotSelectorHook } from '@deepseek-ai/dsh-client-web-react'
+import type { PropsRenderSlots } from '@deepseek-ai/dsh-client-ui-slots'
 import { CustomProviderCard } from './CustomProviderCard.tsx'
 import { deriveKeyRef, messageOf, protocolChoices, providerUsable } from './store.ts'
 import type { ModelsSettingsState, ModelsSettingsStore, ProviderRow } from './store.ts'
@@ -38,9 +42,10 @@ export interface ModelsSectionInjected {
 
 /**
  * Props delivered by the slot outlet: the inject face spread flat (the
- * renderer erases the share boundary at the render call).
+ * renderer erases the share boundary at the render call), plus the
+ * provider-editor child render share.
  */
-export type ModelsSectionProps = Partial<ModelsSectionInjected>
+export type ModelsSectionProps = Partial<ModelsSectionInjected> & PropsRenderSlots<'settings.models.provider-editor'>
 
 /** Provider identity shared by row actions and confirmation copy. */
 export interface ProviderIdentity {
@@ -68,16 +73,35 @@ interface ProviderEditorRenderProps extends Pick<
   target: EditorTarget
 }
 
-/** Render an editor for either the setup posture or an expanded provider row. */
-function renderProviderEditor({ target, ...props }: ProviderEditorRenderProps): ReactNode {
-  return (
+/**
+ * Render an editor for either the setup posture or an expanded provider row.
+ * The card first asks the keyed provider-editor slot (key = provider route
+ * id) whether a provider plugin owns a custom editor; absent an occupant,
+ * the generic schema-driven editor renders. This keeps custom editors
+ * (e.g. the Ollama setup form) and the generic path interchangeable at
+ * every place the page opens a provider editor.
+ * @param props - the target plus the generic editor's variable inputs.
+ * @param renderSlot - the declared child-slot render share.
+ * @returns the occupant's editor, or the generic editor as fallback.
+ */
+function renderProviderEditor(
+  props: ProviderEditorRenderProps,
+  renderSlot: PropsRenderSlots<'settings.models.provider-editor'>['renderSlot'],
+): ReactNode {
+  const { target, ...editorProps } = props
+  const generic = (
     <ProviderEditor
       provider={target.provider}
       displayName={target.displayName}
       settingsPath={target.settingsPath}
       {...target.declared === true ? { declared: true } : {}}
-      {...props}
+      {...editorProps}
     />
+  )
+  return renderSlot(
+    'settings.models.provider-editor',
+    { provider: target.provider, displayName: target.displayName },
+    { entryKey: target.provider, fallback: generic },
   )
 }
 
@@ -169,12 +193,18 @@ export function providerCopy(template: string, target: ProviderIdentity): string
  * @returns the section, or null while the shell has not injected yet.
  */
 export function ModelsSection(props: ModelsSectionProps): ReactNode {
-  const { controller, useSnapshot, api, t } = props
+  const { controller, useSnapshot, api, t, renderSlot } = props
   if (controller === undefined || useSnapshot === undefined || api === undefined || t === undefined) return null
-  return <Loaded injected={{ controller, useSnapshot, api, t }} />
+  return <Loaded injected={{ controller, useSnapshot, api, t }} renderSlot={renderSlot} />
 }
 
-function Loaded({ injected }: { injected: ModelsSectionInjected }): ReactNode {
+function Loaded({
+  injected,
+  renderSlot,
+}: {
+  injected: ModelsSectionInjected
+  renderSlot: PropsRenderSlots<'settings.models.provider-editor'>['renderSlot']
+}): ReactNode {
   const { controller, api, t } = injected
   const state = injected.useSnapshot(snapshot => snapshot)
   const [editing, setEditing] = useState<EditorTarget | undefined>(undefined)
@@ -301,7 +331,7 @@ function Loaded({ injected }: { injected: ModelsSectionInjected }): ReactNode {
                   t,
                   readOnly: !state.writable,
                   onClose: (changed) => { closeSetup(changed, target) },
-                })}
+                }, renderSlot)}
               </li>
             )
           }
@@ -385,7 +415,7 @@ function Loaded({ injected }: { injected: ModelsSectionInjected }): ReactNode {
                   t,
                   readOnly: !state.writable,
                   onClose: (changed) => { closeEditor(changed, target) },
-                })
+                }, renderSlot)
                 : null}
             </li>
           )

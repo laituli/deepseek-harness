@@ -18,6 +18,9 @@ import type {} from '@deepseek-ai/dsh-client-locale/client'
 import type {} from '@deepseek-ai/dsh-api-remotes/client'
 import { ModelsSection } from './ModelsSection.tsx'
 import type { ModelsSectionInjected } from './ModelsSection.tsx'
+// Re-exported so the compiled ./client types chain carries the keyed
+// provider-editor slot merge out to consumers (see ./slots.ts).
+export type { ModelsProviderEditorSlot } from './slots.ts'
 import { DeepSeekOnboardingDialog } from './DeepSeekOnboardingDialog.tsx'
 import type { DeepSeekOnboardingInjected } from './DeepSeekOnboardingDialog.tsx'
 import { WelcomeNotice } from './WelcomeNotice.tsx'
@@ -121,6 +124,11 @@ export function apply(ctx: ClientContext): void {
     order: 10,
     label: () => t('nav'),
     inject: injected,
+    children: {
+      // Per-provider editor override: keyed by provider route id, generic
+      // ProviderEditor as fallback (see ./slots.ts).
+      'settings.models.provider-editor': { kind: 'keyed', scope: 'root' },
+    },
   }, ModelsSection))
   ctx.slots.inject('settings.onboarding', () => ctx.slots.register({
     name: 'settings.onboarding',
