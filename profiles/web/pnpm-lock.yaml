@@ -13,7 +13,7 @@ importers:
         version: git+https://github.com/laituli/dsh-my-plugin-add-plugin.git#91512467694daa9564a781203241fc85069bf028
       dsh-my-plugin-vllm:
         specifier: git+https://github.com/laituli/dsh-my-plugin-vllm.git
-        version: git+https://github.com/laituli/dsh-my-plugin-vllm.git#462a6a009bb73f666e7146d47b3e68cd2c49b351
+        version: git+https://github.com/laituli/dsh-my-plugin-vllm.git#c5ceb12c110ff903e7d87a8d3d05826313d6926d
 
 packages:
 
@@ -34,12 +34,12 @@ packages:
     resolution: {commit: 91512467694daa9564a781203241fc85069bf028, repo: https://github.com/laituli/dsh-my-plugin-add-plugin.git, type: git}
     version: 0.1.0
 
-  dsh-my-plugin-vllm-client@git+https://github.com/laituli/dsh-my-plugin-vllm.git#462a6a009bb73f666e7146d47b3e68cd2c49b351&path:client:
-    resolution: {commit: 462a6a009bb73f666e7146d47b3e68cd2c49b351, path: client, repo: https://github.com/laituli/dsh-my-plugin-vllm.git, type: git}
+  dsh-my-plugin-vllm-client@git+https://github.com/laituli/dsh-my-plugin-vllm.git#c5ceb12c110ff903e7d87a8d3d05826313d6926d&path:client:
+    resolution: {commit: c5ceb12c110ff903e7d87a8d3d05826313d6926d, path: client, repo: https://github.com/laituli/dsh-my-plugin-vllm.git, type: git}
     version: 0.1.0
 
-  dsh-my-plugin-vllm-core@git+https://github.com/laituli/dsh-my-plugin-vllm.git#462a6a009bb73f666e7146d47b3e68cd2c49b351&path:core:
-    resolution: {commit: 462a6a009bb73f666e7146d47b3e68cd2c49b351, path: core, repo: https://github.com/laituli/dsh-my-plugin-vllm.git, type: git}
+  dsh-my-plugin-vllm-core@git+https://github.com/laituli/dsh-my-plugin-vllm.git#c5ceb12c110ff903e7d87a8d3d05826313d6926d&path:core:
+    resolution: {commit: c5ceb12c110ff903e7d87a8d3d05826313d6926d, path: core, repo: https://github.com/laituli/dsh-my-plugin-vllm.git, type: git}
     version: 0.1.0
     peerDependencies:
       '@deepseek-ai/cordis': ^4.0.1
@@ -49,8 +49,8 @@ packages:
       '@deepseek-ai/dsh-typert-protocol': ^0.1.0-rc.5
       '@deepseek-ai/schemastery': ^3.18.1
 
-  dsh-my-plugin-vllm@git+https://github.com/laituli/dsh-my-plugin-vllm.git#462a6a009bb73f666e7146d47b3e68cd2c49b351:
-    resolution: {commit: 462a6a009bb73f666e7146d47b3e68cd2c49b351, repo: https://github.com/laituli/dsh-my-plugin-vllm.git, type: git}
+  dsh-my-plugin-vllm@git+https://github.com/laituli/dsh-my-plugin-vllm.git#c5ceb12c110ff903e7d87a8d3d05826313d6926d:
+    resolution: {commit: c5ceb12c110ff903e7d87a8d3d05826313d6926d, repo: https://github.com/laituli/dsh-my-plugin-vllm.git, type: git}
     version: 0.1.0
 
 snapshots:
@@ -69,14 +69,14 @@ snapshots:
       - '@deepseek-ai/dsh-home-paths'
       - '@deepseek-ai/dsh-llm'
 
-  dsh-my-plugin-vllm-client@git+https://github.com/laituli/dsh-my-plugin-vllm.git#462a6a009bb73f666e7146d47b3e68cd2c49b351&path:client: {}
+  dsh-my-plugin-vllm-client@git+https://github.com/laituli/dsh-my-plugin-vllm.git#c5ceb12c110ff903e7d87a8d3d05826313d6926d&path:client: {}
 
-  dsh-my-plugin-vllm-core@git+https://github.com/laituli/dsh-my-plugin-vllm.git#462a6a009bb73f666e7146d47b3e68cd2c49b351&path:core: {}
+  dsh-my-plugin-vllm-core@git+https://github.com/laituli/dsh-my-plugin-vllm.git#c5ceb12c110ff903e7d87a8d3d05826313d6926d&path:core: {}
 
-  dsh-my-plugin-vllm@git+https://github.com/laituli/dsh-my-plugin-vllm.git#462a6a009bb73f666e7146d47b3e68cd2c49b351:
+  dsh-my-plugin-vllm@git+https://github.com/laituli/dsh-my-plugin-vllm.git#c5ceb12c110ff903e7d87a8d3d05826313d6926d:
     dependencies:
-      dsh-my-plugin-vllm-client: git+https://github.com/laituli/dsh-my-plugin-vllm.git#462a6a009bb73f666e7146d47b3e68cd2c49b351&path:client
-      dsh-my-plugin-vllm-core: git+https://github.com/laituli/dsh-my-plugin-vllm.git#462a6a009bb73f666e7146d47b3e68cd2c49b351&path:core
+      dsh-my-plugin-vllm-client: git+https://github.com/laituli/dsh-my-plugin-vllm.git#c5ceb12c110ff903e7d87a8d3d05826313d6926d&path:client
+      dsh-my-plugin-vllm-core: git+https://github.com/laituli/dsh-my-plugin-vllm.git#c5ceb12c110ff903e7d87a8d3d05826313d6926d&path:core
     transitivePeerDependencies:
       - '@deepseek-ai/cordis'
       - '@deepseek-ai/dsh-home-paths'
